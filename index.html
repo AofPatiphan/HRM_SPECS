@@ -27,10 +27,9 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
-        /* ย้าย scroll-behavior มาไว้ที่ html และเพิ่ม padding เผื่อ Header */
         html {
             scroll-behavior: smooth;
-            scroll-padding-top: 5rem; /* เท่ากับ pt-20 ของ body เพื่อไม่ให้เมนูบัง */
+            scroll-padding-top: 5rem;
         }
 
         body {
@@ -67,7 +66,6 @@
             font-weight: bold;
         }
 
-        /* เอฟเฟควิบวับสำหรับตัวหนังสือ (บนพื้นเข้ม) */
         @keyframes shimmerText {
             0% { background-position: -200% center; }
             100% { background-position: 200% center; }
@@ -81,7 +79,6 @@
             animation: shimmerText 3s linear infinite;
         }
 
-        /* เอฟเฟควิบวับสำหรับปุ่ม/กล่อง (บนพื้นสว่าง) */
         @keyframes shimmerBg {
             0% { background-position: -200% center; }
             100% { background-position: 200% center; }
@@ -470,9 +467,10 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <script>
-        // Init AOS Animation
+        // Init AOS Animation - แก้ once เป็น false และเพิ่ม mirror
         AOS.init({
-            once: true,
+            once: false, 
+            mirror: true,
             offset: 50,
             duration: 800
         });
