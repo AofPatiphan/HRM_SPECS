@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/LogoIcon.png">
+    
+    <title>NEXTORA HRM SYSTEM SPECIFICATION | ระบบจัดการทรัพยากรบุคคลและเงินเดือน</title>
+    <meta name="title" content="NEXTORA HRM SYSTEM SPECIFICATION | ระบบจัดการทรัพยากรบุคคลและเงินเดือน">
+    <meta name="description" content="สเปกและฟีเจอร์ระบบ HRM &amp; Payroll SaaS สำหรับธุรกิจไทย รองรับตั้งแต่ SME ถึง Enterprise พร้อมระบบลงเวลา กะการทำงาน อนุมัติเอกสาร และการเชื่อมต่อบัญชี">
+    <meta name="keywords" content="HRM, HRIS, SaaS, Payroll, ระบบเงินเดือน, ระบบจัดการบุคลากร, ระบบ HR, โปรแกรม HR, Nextora">
+    <meta name="author" content="Nextora Tech Co.,Ltd.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nextora.co.th/">
+    <meta property="og:title" content="NEXTORA HRM SYSTEM SPECIFICATION">
+    <meta property="og:description" content="สเปกและฟีเจอร์ระบบ HRM &amp; Payroll SaaS สำหรับธุรกิจไทย รองรับตั้งแต่ SME ถึง Enterprise">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Prompt (Thai) + Nunito (number/latin) -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <style>
+        :root {
+            --brand-dark:  #1a1a1a;
+            --brand-teal:  #00a99d;
+            --brand-teal2: #00c4b7;
+            --brand-white: #feffff;
+            --brand-gray:  #f4f4f4;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 5rem;
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: var(--brand-gray);
+            color: var(--brand-dark);
+            overflow-x: hidden;
+        }
+
+        /* ===== Gradient helpers ===== */
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #0d2b2a 0%, #1a1a1a 50%, #003d3a 100%);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, var(--brand-teal) 0%, var(--brand-teal2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ===== Glass card ===== */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* ===== Feature list checkmarks ===== */
+        .feature-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #475569;
+        }
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--brand-teal);
+            font-weight: bold;
+        }
+        .feature-list.light li { color: #94a3b8; }
+        .feature-list.light li::before { color: var(--brand-teal2); }
+
+        /* ===== Shimmer text ===== */
+        @keyframes shimmerText {
+            0%   { background-position: -200% center; }
+            100% { background-position:  200% center; }
+        }
+        .text-shimmer {
+            background: linear-gradient(to right, #ffffff 20%, var(--brand-teal2) 45%, #a7f3ef 60%, #ffffff 80%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shimmerText 3.5s linear infinite;
+        }
+
+        /* ===== Shimmer button/badge ===== */
+        @keyframes shimmerBg {
+            0%   { background-position: -200% center; }
+            100% { background-position:  200% center; }
+        }
+        .bg-shimmer {
+            background: linear-gradient(to right, var(--brand-teal) 20%, var(--brand-teal2) 50%, var(--brand-teal) 80%);
+            background-size: 200% auto;
+            animation: shimmerBg 3s linear infinite;
+            color: white;
+            border: none;
+        }
+
+        /* ===== Teal accent border for rule cards ===== */
+        .border-teal-accent { border-left-color: var(--brand-teal) !important; }
+
+        /* ===== Nav ===== */
+        .nav-link {
+            position: relative;
+            font-weight: 500;
+            color: #374151;
+            transition: color 0.2s;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 2px;
+            bottom: -4px; left: 0;
+            background: var(--brand-teal);
+            transition: width 0.25s;
+        }
+        .nav-link:hover { color: var(--brand-teal); }
+        .nav-link:hover::after { width: 100%; }
+
+        /* ===== Pulse dot ===== */
+        @keyframes pulse-teal {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0,169,157,0.4); }
+            50%       { box-shadow: 0 0 0 8px rgba(0,169,157,0); }
+        }
+        .pulse-teal { animation: pulse-teal 2s infinite; }
+
+        /* ===== Icon circle ===== */
+        .icon-circle {
+            width: 48px; height: 48px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(0,169,157,0.12);
+            color: var(--brand-teal);
+            flex-shrink: 0;
+        }
+        .icon-circle-dark {
+            background: rgba(0,169,157,0.2);
+            color: var(--brand-teal2);
+        }
+
+        /* ===== Plan cards ===== */
+        .plan-card {
+            border-radius: 20px;
+            border: 1px solid #e5e7eb;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            background: white;
+            display: block;
+        }
+        .plan-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0,169,157,0.12);
+            border-color: var(--brand-teal);
+        }
+        .plan-card--popular {
+            border-color: var(--brand-teal);
+            background: linear-gradient(135deg, #f0fdfb 0%, #e6faf8 100%);
+        }
+        .plan-card--dark {
+            background: var(--brand-dark);
+            border-color: #333;
+            color: white;
+        }
+        .plan-card--dark:hover {
+            border-color: var(--brand-teal);
+            box-shadow: 0 20px 40px rgba(0,169,157,0.25);
+        }
+
+        /* ===== Feature cards ===== */
+        .feature-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid #f1f5f9;
+            transition: all 0.25s;
+        }
+        .feature-card:hover {
+            box-shadow: 0 8px 24px rgba(0,169,157,0.1);
+            border-color: rgba(0,169,157,0.3);
+        }
+
+        /* ===== Enterprise section ===== */
+        .ent-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: border-color 0.3s;
+        }
+        .ent-card:hover { border-color: var(--brand-teal); }
+
+        /* ===== Rule badges ===== */
+        .rule-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            border-left: 4px solid var(--brand-teal);
+            transition: transform 0.2s;
+        }
+        .rule-card:hover { transform: translateY(-4px); }
+
+        /* ===== Scrollbar ===== */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: var(--brand-teal); border-radius: 3px; }
+
+        /* ===== Persona badges ===== */
+        .persona-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            font-size: 0.65rem; font-weight: 600; letter-spacing: 0.05em;
+            padding: 2px 8px; border-radius: 999px;
+        }
+        .badge-exec  { background:#fef9c3; color:#854d0e; }
+        .badge-hr    { background:#e0f2fe; color:#075985; }
+        .badge-emp   { background:#f0fdf4; color:#166534; }
+
+        /* ===== Accordion / expandable card ===== */
+        .acc-card {
+            background: white;
+            border-radius: 16px;
+            border: 1px solid #f1f5f9;
+            transition: all 0.25s;
+            cursor: pointer;
+        }
+        .acc-card:hover {
+            box-shadow: 0 8px 24px rgba(0,169,157,0.1);
+            border-color: rgba(0,169,157,0.3);
+        }
+        .acc-card.open { border-color: rgba(0,169,157,0.45); }
+        .acc-header { padding: 1.25rem 1.5rem; display:flex; align-items:flex-start; gap:0.75rem; }
+        .acc-chevron {
+            margin-left: auto; flex-shrink:0; margin-top:2px;
+            color: #94a3b8;
+            transition: transform 0.3s;
+        }
+        .acc-card.open .acc-chevron { transform: rotate(180deg); color: var(--brand-teal); }
+
+        /* detail body */
+        .acc-body {
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.3s;
+            padding: 0 1.5rem;
+        }
+        .acc-card.open .acc-body { max-height: 800px; padding-bottom: 1.25rem; }
+
+        /* detail items */
+        .detail-item {
+            display: flex; gap: 0.6rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #f8fafc;
+            align-items: flex-start;
+        }
+        .detail-item:last-child { border-bottom: none; }
+        .detail-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--brand-teal); flex-shrink:0; margin-top:5px;
+        }
+        .detail-title { font-weight: 600; font-size:0.85rem; color:#1e293b; }
+        .detail-desc  { font-size:0.78rem; color:#64748b; margin-top:1px; line-height:1.5; }
+
+        /* dark section detail */
+        .acc-card-dark {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px; cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        .acc-card-dark:hover { border-color: var(--brand-teal); }
+        .acc-card-dark.open { border-color: rgba(0,196,183,0.6); }
+        .acc-card-dark .detail-title { color: #e2e8f0; }
+        .acc-card-dark .detail-desc  { color: #94a3b8; }
+        .acc-card-dark .detail-item  { border-bottom-color: rgba(255,255,255,0.06); }
+
+        /* standard small card accordion */
+        .acc-sm {
+            padding: 1.1rem 1.25rem; border-radius: 16px;
+            border: 1px solid #f1f5f9; background:white;
+            cursor: pointer; transition: all 0.25s;
+        }
+        .acc-sm:hover { box-shadow: 0 4px 16px rgba(0,169,157,0.1); border-color:rgba(0,169,157,0.3); }
+        .acc-sm.open  { border-color:rgba(0,169,157,0.45); }
+        .acc-sm .acc-body { padding:0 0; }
+        .acc-sm.open .acc-body { padding-bottom:0.75rem; }
+    </style>
+</head>
+<body class="antialiased pt-20">
+
+    <!-- ===== NAV ===== -->
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+
+            <!-- Logo -->
+            <a href="#home" class="flex items-center gap-3">
+                <img src="assets/LogoIcon.png" alt="Nextora Icon" class="h-9 w-9 object-contain">
+                <img src="assets/Logo_text.png"  alt="Nextora" class="h-7 object-contain hidden sm:block">
+            </a>
+
+            <!-- Desktop nav -->
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#plans"         class="nav-link">Plans</a>
+                <a href="#core-features" class="nav-link">Core Features</a>
+                <a href="#standard-features" class="nav-link">Standard</a>
+                <a href="#enterprise"    class="nav-link">Enterprise</a>
+                <a href="#rules"         class="nav-link">System Rules</a>
+            </div>
+
+            <!-- Mobile toggle -->
+            <button id="mobile-menu-btn" class="md:hidden text-gray-600 focus:outline-none p-1">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 shadow-xl absolute w-full">
+            <div class="flex flex-col px-6 py-4 space-y-4 font-medium text-gray-600">
+                <a href="#plans"              class="hover:text-teal-600 mobile-link flex items-center gap-2"><i data-lucide="layers" class="w-4 h-4"></i> Plans</a>
+                <a href="#core-features"      class="hover:text-teal-600 mobile-link flex items-center gap-2"><i data-lucide="star" class="w-4 h-4"></i> Core Features</a>
+                <a href="#standard-features"  class="hover:text-teal-600 mobile-link flex items-center gap-2"><i data-lucide="zap" class="w-4 h-4"></i> Standard</a>
+                <a href="#enterprise"         class="hover:text-teal-600 mobile-link flex items-center gap-2"><i data-lucide="building-2" class="w-4 h-4"></i> Enterprise</a>
+                <a href="#rules"              class="hover:text-teal-600 mobile-link flex items-center gap-2"><i data-lucide="shield-check" class="w-4 h-4"></i> System Rules</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <header class="bg-gradient-primary text-white py-24 relative overflow-hidden" id="home">
+        <div class="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <!-- teal glow blobs -->
+        <div class="absolute -top-20 -left-20 w-96 h-96 rounded-full opacity-20" style="background:radial-gradient(circle, #00a99d 0%, transparent 70%);"></div>
+        <div class="absolute bottom-0 right-0 w-80 h-80 rounded-full opacity-15" style="background:radial-gradient(circle, #00c4b7 0%, transparent 70%);"></div>
+
+        <div class="container mx-auto px-6 relative z-10" data-aos="fade-down" data-aos-duration="1000">
+            <!-- Brand + badge row -->
+            <div class="flex items-center gap-4 mb-6">
+                <img src="assets/Logo_text_white.png" alt="Nextora" class="h-10 object-contain">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold tracking-wide backdrop-blur-sm border border-white/30" style="background:rgba(0,169,157,0.25);">
+                    <span class="w-2 h-2 rounded-full bg-teal-300 pulse-teal inline-block"></span>
+                    BUSINESS VERSION
+                </div>
+            </div>
+
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 leading-tight text-shimmer">
+                HRM<br><span class="text-3xl md:text-4xl font-normal opacity-80">SYSTEM SPECIFICATION</span>
+            </h1>
+            <p class="text-white/60 mb-10 text-lg">ระบบจัดการทรัพยากรบุคคลและเงินเดือนสำหรับธุรกิจไทย</p>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white/10 p-4 rounded-2xl backdrop-blur-sm border border-white/15 hover:bg-white/20 transition">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="target" class="w-5 h-5" style="color:#00c4b7"></i>
+                        <h3 class="font-semibold text-sm">Designed For</h3>
+                    </div>
+                    <p class="text-xs text-white/60">Thai companies, Office, Factory, Hybrid work, SME to Enterprise</p>
+                </div>
+                <div class="bg-white/10 p-4 rounded-2xl backdrop-blur-sm border border-white/15 hover:bg-white/20 transition">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="cloud" class="w-5 h-5" style="color:#00c4b7"></i>
+                        <h3 class="font-semibold text-sm">Platform</h3>
+                    </div>
+                    <p class="text-xs text-white/60">SaaS subscription model</p>
+                </div>
+                <div class="bg-white/10 p-4 rounded-2xl backdrop-blur-sm border border-white/15 hover:bg-white/20 transition">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="layers" class="w-5 h-5" style="color:#00c4b7"></i>
+                        <h3 class="font-semibold text-sm">Key Supports</h3>
+                    </div>
+                    <p class="text-xs text-white/60">Thai Payroll, Attendance, Multi-company, Integration</p>
+                </div>
+                <div class="bg-white/10 p-4 rounded-2xl backdrop-blur-sm border border-white/15 hover:bg-white/20 transition">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="shield-check" class="w-5 h-5" style="color:#00c4b7"></i>
+                        <h3 class="font-semibold text-sm">Compliance</h3>
+                    </div>
+                    <p class="text-xs text-white/60">PDPA, Audit, Security, Govt. Standards</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== PLANS ===== -->
+    <section id="plans" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12" data-aos="fade-up">
+                <span class="text-xs font-bold tracking-widest uppercase" style="color:var(--brand-teal)">Nextora HRM</span>
+                <h2 class="text-3xl font-bold text-gray-900 mt-1">Available Plans</h2>
+                <p class="text-gray-400 mt-2">Scalable solutions from SME to Enterprise</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- Core -->
+                <a href="#core-features" class="plan-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="icon-circle mb-4">
+                        <i data-lucide="building" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">CORE PLAN</h3>
+                    <p class="text-sm text-gray-400 mt-2">Essential features for small companies</p>
+                    <div class="mt-4 flex items-center gap-1 text-xs font-medium" style="color:var(--brand-teal)">
+                        <i data-lucide="arrow-right" class="w-3 h-3"></i> View features
+                    </div>
+                </a>
+
+                <!-- Standard (Popular) -->
+                <a href="#standard-features" class="plan-card plan-card--popular relative overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+                    <div class="absolute top-0 right-0 bg-shimmer text-white text-xs px-3 py-1 rounded-bl-xl font-semibold shadow">POPULAR</div>
+                    <div class="icon-circle mb-4">
+                        <i data-lucide="rocket" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-xl font-bold" style="color:var(--brand-dark)">STANDARD PLAN</h3>
+                    <p class="text-sm mt-2" style="color:var(--brand-teal)">For medium companies with HR teams</p>
+                    <div class="mt-4 flex items-center gap-1 text-xs font-medium" style="color:var(--brand-teal)">
+                        <i data-lucide="arrow-right" class="w-3 h-3"></i> View features
+                    </div>
+                </a>
+
+                <!-- Pro -->
+                <a href="#standard-features" class="plan-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="icon-circle mb-4">
+                        <i data-lucide="zap" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">PRO PLAN</h3>
+                    <p class="text-sm text-gray-400 mt-2">Advanced workflows &amp; performance</p>
+                    <div class="mt-4 flex items-center gap-1 text-xs font-medium" style="color:var(--brand-teal)">
+                        <i data-lucide="arrow-right" class="w-3 h-3"></i> View features
+                    </div>
+                </a>
+
+                <!-- Enterprise -->
+                <a href="#enterprise" class="plan-card plan-card--dark" data-aos="fade-up" data-aos-delay="400">
+                    <div class="icon-circle icon-circle-dark mb-4">
+                        <i data-lucide="crown" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">ENTERPRISE PLAN</h3>
+                    <p class="text-sm text-gray-400 mt-2">Large scale, Factory, Custom rules</p>
+                    <div class="mt-4 flex items-center gap-1 text-xs font-medium" style="color:var(--brand-teal)">
+                        <i data-lucide="arrow-right" class="w-3 h-3"></i> View features
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CORE FEATURES ===== -->
+    <section id="core-features" class="py-16" style="background:#f8fffe; border-top:1px solid #e6f7f5;">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-10" data-aos="fade-right">
+                <div>
+                    <span class="text-xs font-bold tracking-widest uppercase" style="color:var(--brand-teal)">ALL PLANS</span>
+                    <h2 class="text-3xl font-bold text-gray-900 mt-1">CORE FEATURES</h2>
+                </div>
+                <div class="bg-white px-4 py-2 rounded-xl shadow-sm border mt-4 md:mt-0 flex items-center gap-2" style="border-color:rgba(0,169,157,0.2)">
+                    <i data-lucide="target" class="w-4 h-4" style="color:var(--brand-teal)"></i>
+                    <span class="text-sm text-gray-600">Suitable for: Small company, Office, Basic payroll, Basic HR</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+                <!-- Employee Management -->
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="50">
+                    <div class="flex items-start gap-3 mb-3">
+                        <div class="icon-circle w-10 h-10 rounded-xl flex-shrink-0"><i data-lucide="users" class="w-5 h-5"></i></div>
+                        <div>
+                            <div class="flex flex-wrap gap-1 mb-1">
+                                <span class="persona-badge badge-hr">HR</span>
+                                <span class="persona-badge badge-exec">ผู้บริหาร</span>
+                            </div>
+                            <h4 class="font-bold text-sm text-gray-800">ข้อมูลพนักงาน</h4>
+                            <p class="text-xs text-gray-400">Employee Management</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mt-3">
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">Employee Profile</div><div class="detail-desc">บันทึกข้อมูลพนักงานครบถ้วน ทั้งชื่อ วันเกิด ที่อยู่ ข้อมูลครอบครัว และรูปถ่าย</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">Department / Position</div><div class="detail-desc">กำหนดสายงาน แผนก ตำแหน่ง และผู้บังคับบัญชา รองรับโครงสร้างหลายระดับ</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">Salary &amp; Finance Info</div><div class="detail-desc">เก็บข้อมูลเงินเดือน ธนาคาร เลขบัญชี และข้อมูลภาษีของแต่ละคน</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">Employee Status &amp; Documents</div><div class="detail-desc">ติดตามสถานะ ลาออก/โอนย้าย พร้อมแนบเอกสารสำคัญเช่น สัญญาจ้าง TorTor 91</div></div></div>
+                    </div>
+                </div>
+
+                <!-- Org Structure -->
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-start gap-3 mb-3">
+                        <div class="icon-circle w-10 h-10 rounded-xl flex-shrink-0"><i data-lucide="network" class="w-5 h-5"></i></div>
+                        <div>
+                            <div class="flex flex-wrap gap-1 mb-1">
+                                <span class="persona-badge badge-exec">ผู้บริหาร</span>
+                                <span class="persona-badge badge-hr">HR</span>
+                            </div>
+                            <h4 class="font-bold text-sm text-gray-800">โครงสร้างองค์กร</h4>
+                            <p class="text-xs text-gray-400">Organization Structure</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mt-3">
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">Company / Branch / Department</div><div class="detail-desc">ตั้งค่าบริษัท สาขา และแผนกได้ไม่จำกัด รองรับกลุ่มบริษัทหลาย Legal Entity</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">Position &amp; Manager</div><div class="detail-desc">กำหนดตำแหน่งงาน ระดับ และผู้บังคับบัญชาสำหรับใช้ในระบบอนุมัติอัตโนมัติ</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">Org Chart</div><div class="detail-desc">แสดง Organization Chart แบบ Visual ได้ทันที เห็นสายการบังคับบัญชาชัดเจน</div></div></div>
+                    </div>
+                </div>
+
+                <!-- Time & Attendance -->
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="150">
+                    <div class="flex items-start gap-3 mb-3">
+                        <div class="icon-circle w-10 h-10 rounded-xl flex-shrink-0"><i data-lucide="clock" class="w-5 h-5"></i></div>
+                        <div>
+                            <div class="flex flex-wrap gap-1 mb-1">
+                                <span class="persona-badge badge-hr">HR</span>
+                                <span class="persona-badge badge-emp">พนักงาน</span>
+                            </div>
+                            <h4 class="font-bold text-sm text-gray-800">เวลาทำงานและการเข้างาน</h4>
+                            <p class="text-xs text-gray-400">Time &amp; Attendance</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mt-3">
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">Clock In / Out &amp; Shift</div><div class="detail-desc">บันทึกเวลาเข้า-ออกงาน รองรับกะทำงานหลายรูปแบบ ทั้ง Office, Factory และ Flexible</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">Leave &amp; Holiday</div><div class="detail-desc">จัดการวันลาทุกประเภท พักร้อน ป่วย กิจ และวันหยุดนักขัตฤกษ์ไทย</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">Late / OT &amp; Import</div><div class="detail-desc">คำนวณเวลาสายและ OT อัตโนมัติ นำเข้าจากเครื่องสแกน, แอป หรือ Excel ได้</div></div></div>
+                    </div>
+                </div>
+
+                <!-- Payroll -->
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex items-start gap-3 mb-3">
+                        <div class="icon-circle w-10 h-10 rounded-xl flex-shrink-0"><i data-lucide="banknote" class="w-5 h-5"></i></div>
+                        <div>
+                            <div class="flex flex-wrap gap-1 mb-1">
+                                <span class="persona-badge badge-hr">HR</span>
+                                <span class="persona-badge badge-exec">ผู้บริหาร</span>
+                            </div>
+                            <h4 class="font-bold text-sm text-gray-800">คำนวณเงินเดือน</h4>
+                            <p class="text-xs text-gray-400">Payroll (Basic)</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mt-3">
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">เงินเดือน OT และโบนัส</div><div class="detail-desc">คำนวณเงินเดือนรายเดือน/รายวัน พร้อม OT เบี้ยเลี้ยง และโบนัสตามเงื่อนไข</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">ภาษี ประกันสังคม กองทุนสำรอง</div><div class="detail-desc">หักอัตโนมัติตามกฎหมายไทย ทั้งภาษี ณ ที่จ่าย ประกันสังคม และ PVD</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">Loan &amp; Payroll Lock</div><div class="detail-desc">หักเงินกู้ยืมอัตโนมัติ ล็อกและอนุมัติรอบเงินเดือนก่อน Confirm จ่าย</div></div></div>
+                    </div>
+                </div>
+
+                <!-- Employee Self Service -->
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="250">
+                    <div class="flex items-start gap-3 mb-3">
+                        <div class="icon-circle w-10 h-10 rounded-xl flex-shrink-0"><i data-lucide="smartphone" class="w-5 h-5"></i></div>
+                        <div>
+                            <div class="flex flex-wrap gap-1 mb-1">
+                                <span class="persona-badge badge-emp">พนักงาน</span>
+                            </div>
+                            <h4 class="font-bold text-sm text-gray-800">พนักงานจัดการตัวเอง</h4>
+                            <p class="text-xs text-gray-400">Employee Self Service</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mt-3">
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">ดูสลิปเงินเดือน</div><div class="detail-desc">เข้าดูสลิปย้อนหลังได้เองผ่านเว็บหรือแอป ไม่ต้องรอ HR ส่งให้</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">ขอลา / ดูสถานะ</div><div class="detail-desc">ยื่นลาออนไลน์ ดูสถานะอนุมัติ Real-time และดูวันลาคงเหลือ</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">ดูเวลาเข้างาน &amp; แก้ไขข้อมูล</div><div class="detail-desc">ตรวจสอบประวัติเข้า-ออกงาน อัปเดตที่อยู่ เบอร์โทร บัญชีธนาคารได้เอง</div></div></div>
+                    </div>
+                </div>
+
+                <!-- Approval & System -->
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="flex items-start gap-3 mb-3">
+                        <div class="icon-circle w-10 h-10 rounded-xl flex-shrink-0"><i data-lucide="check-circle" class="w-5 h-5"></i></div>
+                        <div>
+                            <div class="flex flex-wrap gap-1 mb-1">
+                                <span class="persona-badge badge-exec">ผู้บริหาร</span>
+                                <span class="persona-badge badge-hr">HR</span>
+                            </div>
+                            <h4 class="font-bold text-sm text-gray-800">การอนุมัติและระบบ</h4>
+                            <p class="text-xs text-gray-400">Approval &amp; System</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mt-3">
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">อนุมัติโดยผู้จัดการ</div><div class="detail-desc">อนุมัติใบลา OT และแก้ไขเวลาผ่านเว็บ ระบบแจ้งเตือนอัตโนมัติ</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">Export &amp; Audit</div><div class="detail-desc">ดาวน์โหลดรายงาน Excel/CSV ทุกส่วน พร้อม Log การเปลี่ยนแปลงและระบบสิทธิ์</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">รองรับภาษาไทย-อังกฤษ</div><div class="detail-desc">เลือกภาษา UI ได้ รองรับชื่อภาษาไทยและรูปแบบวันที่ไทย</div></div></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== STANDARD FEATURES ===== -->
+    <section id="standard-features" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-10" data-aos="fade-right">
+                <div>
+                    <span class="text-xs font-bold tracking-widest uppercase text-indigo-500">ADD-ON / PRO PLAN</span>
+                    <h2 class="text-3xl font-bold text-gray-900 mt-1">STANDARD FEATURES</h2>
+                </div>
+                <div class="bg-indigo-50 px-4 py-2 rounded-xl shadow-sm border border-indigo-100 mt-4 md:mt-0 flex items-center gap-2">
+                    <i data-lucide="target" class="w-4 h-4 text-indigo-500"></i>
+                    <span class="text-sm text-indigo-700">Suitable for: Medium company, HR team, Approval flow</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+                <!-- Benefits -->
+                <div class="p-4 border border-gray-100 rounded-2xl hover:shadow-md hover:border-teal-200 transition-all bg-white" data-aos="fade-up">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="icon-circle w-8 h-8 rounded-lg flex-shrink-0"><i data-lucide="gift" class="w-4 h-4"></i></div>
+                        <div><h4 class="font-bold text-sm">สวัสดิการพนักงาน</h4><p class="text-xs text-gray-400">Benefits</p></div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">ประกัน &amp; เบี้ยเลี้ยง</div><div class="detail-desc">กำหนดสิทธิ์ประกันสุขภาพ ชีวิต และเบี้ยเลี้ยงตามระดับพนักงาน</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">สวัสดิการรักษาพยาบาล</div><div class="detail-desc">เบิกค่าพยาบาล โรงพยาบาล และสวัสดิการต่างๆ ได้ผ่านระบบ</div></div></div>
+                    </div>
+                </div>
+
+                <!-- Expense -->
+                <div class="p-4 border border-gray-100 rounded-2xl hover:shadow-md hover:border-teal-200 transition-all bg-white" data-aos="fade-up" data-aos-delay="50">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="icon-circle w-8 h-8 rounded-lg flex-shrink-0"><i data-lucide="receipt" class="w-4 h-4"></i></div>
+                        <div><h4 class="font-bold text-sm">ค่าใช้จ่ายและเบิกเงิน</h4><p class="text-xs text-gray-400">Expense / Claim</p></div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">ยื่นค่าใช้จ่ายออนไลน์</div><div class="detail-desc">แนบใบเสร็จและยื่นเบิกออนไลน์ ผู้จัดการอนุมัติผ่านระบบได้ทันที</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">เชื่อมต่อ Payroll</div><div class="detail-desc">ยอดอนุมัติโอนเข้ารอบเงินเดือนอัตโนมัติ ไม่ต้องป้อนมือ</div></div></div>
+                    </div>
+                </div>
+
+                <!-- Asset -->
+                <div class="p-4 border border-gray-100 rounded-2xl hover:shadow-md hover:border-teal-200 transition-all bg-white" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="icon-circle w-8 h-8 rounded-lg flex-shrink-0"><i data-lucide="laptop" class="w-4 h-4"></i></div>
+                        <div><h4 class="font-bold text-sm">จัดการทรัพย์สิน</h4><p class="text-xs text-gray-400">Asset Management</p></div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">ทรัพย์สินบริษัท</div><div class="detail-desc">ลงทะเบียน ติดตาม และดูว่าพนักงานคนไหนถือครองอะไรอยู่</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">เบิก / คืน / หักเสียหาย</div><div class="detail-desc">หากสูญหายหรือเสียหายสามารถหักจากเงินเดือนได้</div></div></div>
+                    </div>
+                </div>
+
+                <!-- Workflow -->
+                <div class="p-4 border border-gray-100 rounded-2xl hover:shadow-md hover:border-teal-200 transition-all bg-white" data-aos="fade-up" data-aos-delay="150">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="icon-circle w-8 h-8 rounded-lg flex-shrink-0"><i data-lucide="git-branch" class="w-4 h-4"></i></div>
+                        <div><h4 class="font-bold text-sm">ขั้นตอนอนุมัติ</h4><p class="text-xs text-gray-400">Workflow Approval</p></div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">อนุมัติหลายขั้น</div><div class="detail-desc">กำหนดสายอนุมัติได้ เช่น ผู้จัดการ → HR → ผู้อำนวยการ</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">เงื่อนไขพิเศษ</div><div class="detail-desc">กำหนดได้ว่าวงเงินเกิน X บาทต้องผ่าน CFO ก่อน</div></div></div>
+                    </div>
+                </div>
+
+                <!-- Performance -->
+                <div class="p-4 border border-gray-100 rounded-2xl hover:shadow-md hover:border-teal-200 transition-all bg-white" data-aos="fade-up">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="icon-circle w-8 h-8 rounded-lg flex-shrink-0"><i data-lucide="trending-up" class="w-4 h-4"></i></div>
+                        <div><h4 class="font-bold text-sm">ผลการทำงาน / KPI</h4><p class="text-xs text-gray-400">Performance / KPI</p></div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">ประเมินผลและให้คะแนน</div><div class="detail-desc">HR และผู้จัดการประเมินผลงานรายปี/รายไตรมาส พร้อม Self-assessment</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">เชื่อมกับโบนัส</div><div class="detail-desc">ผลคะแนนส่งตรงไปคำนวณโบนัสใน Payroll อัตโนมัติ</div></div></div>
+                    </div>
+                </div>
+
+                <!-- Training -->
+                <div class="p-4 border border-gray-100 rounded-2xl hover:shadow-md hover:border-teal-200 transition-all bg-white" data-aos="fade-up" data-aos-delay="50">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="icon-circle w-8 h-8 rounded-lg flex-shrink-0"><i data-lucide="graduation-cap" class="w-4 h-4"></i></div>
+                        <div><h4 class="font-bold text-sm">ฝึกอบรมและพัฒนา</h4><p class="text-xs text-gray-400">Training</p></div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">หลักสูตรและสอบ</div><div class="detail-desc">สร้างหลักสูตร กำหนดผู้เข้าร่วม และทำแบบทดสอบหลังเรียนในระบบ</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">ใบประกาศนียบัตร</div><div class="detail-desc">ออก Certificate ดิจิทัล พนักงานดาวน์โหลดได้เอง</div></div></div>
+                    </div>
+                </div>
+
+                <!-- Onboarding -->
+                <div class="p-4 border border-gray-100 rounded-2xl hover:shadow-md hover:border-teal-200 transition-all bg-white" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="icon-circle w-8 h-8 rounded-lg flex-shrink-0"><i data-lucide="door-open" class="w-4 h-4"></i></div>
+                        <div><h4 class="font-bold text-sm">ต้อนรับพนักงานใหม่</h4><p class="text-xs text-gray-400">Onboarding &amp; News</p></div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">แบบฟอร์มและ Checklist</div><div class="detail-desc">พนักงานใหม่กรอกออนไลน์และทำ Checklist เตรียมตัวก่อนวันแรก</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">ประกาศและนโยบาย</div><div class="detail-desc">HR แจ้งข่าวสารและอัปโหลดนโยบายให้พนักงานอ่านได้ทุกที่</div></div></div>
+                    </div>
+                </div>
+
+                <!-- Tech Extras -->
+                <div class="p-4 border border-gray-100 rounded-2xl hover:shadow-md hover:border-teal-200 transition-all bg-white" data-aos="fade-up" data-aos-delay="150">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="icon-circle w-8 h-8 rounded-lg flex-shrink-0"><i data-lucide="cpu" class="w-4 h-4"></i></div>
+                        <div><h4 class="font-bold text-sm">เทคโนโลยีเพิ่มเติม</h4><p class="text-xs text-gray-400">Tech Extras</p></div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">Mobile &amp; GPS Clocking</div><div class="detail-desc">Clock in ผ่านมือถือ พร้อม GPS ยืนยันว่าอยู่ในพื้นที่จริง</div></div></div>
+                        <div class="detail-item"><div class="detail-dot"></div><div><div class="detail-title">เปิด/ปิดโมดูลต่อบริษัท</div><div class="detail-desc">แอดมินกำหนดโมดูลต่อบริษัทได้ รองรับ SaaS Multi-tenant</div></div></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ENTERPRISE ===== -->
+    <section id="enterprise" class="py-16 relative overflow-hidden" style="background:var(--brand-dark);">
+        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+        <div class="absolute -top-20 -right-20 w-96 h-96 rounded-full opacity-10" style="background:radial-gradient(circle, #00a99d 0%, transparent 70%);"></div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-10" data-aos="fade-right">
+                <div>
+                    <span class="text-xs font-bold tracking-widest uppercase" style="color:var(--brand-teal)">ULTIMATE SCALE</span>
+                    <h2 class="text-3xl font-bold mt-1 text-white">ENTERPRISE FEATURES</h2>
+                </div>
+                <div class="px-4 py-2 rounded-xl border mt-4 md:mt-0 flex items-center gap-2" style="background:rgba(0,169,157,0.1); border-color:rgba(0,169,157,0.3)">
+                    <i data-lucide="target" class="w-4 h-4" style="color:var(--brand-teal)"></i>
+                    <span class="text-sm text-gray-300">Factory, Large company, Thai payroll heavy, Humanica-level</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <div class="ent-card" data-aos="zoom-in" data-aos-delay="0">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="icon-circle icon-circle-dark w-10 h-10 rounded-xl"><i data-lucide="factory" class="w-5 h-5"></i></div>
+                        <h4 class="font-bold text-base" style="color:var(--brand-teal2)">Advanced Time / Factory</h4>
+                    </div>
+                    <ul class="feature-list light">
+                        <li>Fingerprint machine / Face scan / RFID</li>
+                        <li>Shift rotation, Night shift</li>
+                        <li>Cutoff rule, Roster / schedule</li>
+                    </ul>
+                </div>
+
+                <div class="ent-card" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="icon-circle icon-circle-dark w-10 h-10 rounded-xl"><i data-lucide="settings-2" class="w-5 h-5"></i></div>
+                        <h4 class="font-bold text-base" style="color:var(--brand-teal2)">Advanced Payroll &amp; Integration</h4>
+                    </div>
+                    <ul class="feature-list light">
+                        <li>Piece rate, Complex allowance</li>
+                        <li>Custom formula, Rule based payroll</li>
+                        <li>Accounting Integration (SAP, Oracle, Express, FlowAccount, API)</li>
+                    </ul>
+                </div>
+
+                <div class="ent-card" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="icon-circle icon-circle-dark w-10 h-10 rounded-xl"><i data-lucide="bar-chart-3" class="w-5 h-5"></i></div>
+                        <h4 class="font-bold text-base" style="color:var(--brand-teal2)">Manpower &amp; Analytics</h4>
+                    </div>
+                    <ul class="feature-list light">
+                        <li>Headcount plan, Budget plan, Vacancy</li>
+                        <li>Cost, Headcount, OT, Trend reports</li>
+                    </ul>
+                </div>
+
+                <div class="ent-card" data-aos="zoom-in" data-aos-delay="0">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="icon-circle icon-circle-dark w-10 h-10 rounded-xl"><i data-lucide="user-check" class="w-5 h-5"></i></div>
+                        <h4 class="font-bold text-base" style="color:var(--brand-teal2)">Lifecycle Management</h4>
+                    </div>
+                    <ul class="feature-list light">
+                        <li>Recruitment (Job post, Applicant, Offer, Auto create)</li>
+                        <li>Offboarding (Resign, Exit interview, Final pay, Asset return)</li>
+                        <li>Disciplinary (Warning, Suspension, Termination)</li>
+                    </ul>
+                </div>
+
+                <div class="ent-card" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="icon-circle icon-circle-dark w-10 h-10 rounded-xl"><i data-lucide="landmark" class="w-5 h-5"></i></div>
+                        <h4 class="font-bold text-base" style="color:var(--brand-teal2)">Bank / Government Export</h4>
+                    </div>
+                    <ul class="feature-list light">
+                        <li>Bank file (SCB / KBANK / BBL / KTB)</li>
+                        <li>Social security file</li>
+                        <li>Revenue department file (PND1 / 50Tawi)</li>
+                    </ul>
+                </div>
+
+                <div class="ent-card" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="icon-circle icon-circle-dark w-10 h-10 rounded-xl"><i data-lucide="lock-keyhole" class="w-5 h-5"></i></div>
+                        <h4 class="font-bold text-base" style="color:var(--brand-teal2)">Security &amp; Device</h4>
+                    </div>
+                    <ul class="feature-list light">
+                        <li>Privacy / PDPA (Consent log, Retention, Masking, Delete rule)</li>
+                        <li>Device Integration (Fingerprint, Face, Kiosk, API log)</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SYSTEM RULES ===== -->
+    <section id="rules" class="py-16" style="background:#f0fdfb;">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12" data-aos="fade-up">
+                <span class="text-xs font-bold tracking-widest uppercase" style="color:var(--brand-teal)">ARCHITECTURE</span>
+                <h2 class="text-3xl font-bold text-gray-900 mt-1">
+                    SYSTEM RULES <span class="text-lg font-normal text-gray-400">(DEVELOPMENT GUIDELINES)</span>
+                </h2>
+                <p class="text-gray-500 mt-2">Architecture &amp; Constraints for building the system</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+
+                <div class="rule-card" data-aos="flip-up">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="puzzle" class="w-4 h-4 flex-shrink-0" style="color:var(--brand-teal)"></i>
+                        <h4 class="font-bold text-sm text-gray-800">Modular System</h4>
+                    </div>
+                    <p class="text-xs text-gray-500">HR, Time, Payroll, Benefit, Expense, Asset, Workflow, Analytics, Billing</p>
+                </div>
+
+                <div class="rule-card" data-aos="flip-up" data-aos-delay="50">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="building-2" class="w-4 h-4 flex-shrink-0" style="color:var(--brand-teal)"></i>
+                        <h4 class="font-bold text-sm text-gray-800">Multi-company</h4>
+                    </div>
+                    <p class="text-xs text-gray-500">SaaS ready, Support many companies, Data separated per company</p>
+                </div>
+
+                <div class="rule-card" data-aos="flip-up" data-aos-delay="100">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="calculator" class="w-4 h-4 flex-shrink-0" style="color:var(--brand-teal)"></i>
+                        <h4 class="font-bold text-sm text-gray-800">Flexible Payroll</h4>
+                    </div>
+                    <p class="text-xs text-gray-500">Rule based, Not hard-coded</p>
+                </div>
+
+                <div class="rule-card" data-aos="flip-up" data-aos-delay="150">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="clock-4" class="w-4 h-4 flex-shrink-0" style="color:var(--brand-teal)"></i>
+                        <h4 class="font-bold text-sm text-gray-800">Flexible Shift/OT</h4>
+                    </div>
+                    <p class="text-xs text-gray-500">Multiple shift, Factory support</p>
+                </div>
+
+                <div class="rule-card" data-aos="flip-up" data-aos-delay="200">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="key-round" class="w-4 h-4 flex-shrink-0" style="color:var(--brand-teal)"></i>
+                        <h4 class="font-bold text-sm text-gray-800">Permission Control</h4>
+                    </div>
+                    <p class="text-xs text-gray-500">Admin, HR, Manager, Employee</p>
+                </div>
+
+                <div class="rule-card" data-aos="flip-up" data-aos-delay="250">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="check-square" class="w-4 h-4 flex-shrink-0" style="color:var(--brand-teal)"></i>
+                        <h4 class="font-bold text-sm text-gray-800">Approval Flow</h4>
+                    </div>
+                    <p class="text-xs text-gray-500">Multi step, Configurable</p>
+                </div>
+
+                <div class="rule-card" data-aos="flip-up" data-aos-delay="300">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="plug-2" class="w-4 h-4 flex-shrink-0" style="color:var(--brand-teal)"></i>
+                        <h4 class="font-bold text-sm text-gray-800">Add-on Support</h4>
+                    </div>
+                    <p class="text-xs text-gray-500">Enable modules per company</p>
+                </div>
+
+                <div class="rule-card" data-aos="flip-up" data-aos-delay="350">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="file-text" class="w-4 h-4 flex-shrink-0" style="color:var(--brand-teal)"></i>
+                        <h4 class="font-bold text-sm text-gray-800">Audit Log</h4>
+                    </div>
+                    <p class="text-xs text-gray-500">Track all system changes</p>
+                </div>
+
+                <div class="rule-card" data-aos="flip-up" data-aos-delay="400">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="link-2" class="w-4 h-4 flex-shrink-0" style="color:var(--brand-teal)"></i>
+                        <h4 class="font-bold text-sm text-gray-800">Integration Ready</h4>
+                    </div>
+                    <p class="text-xs text-gray-500">API, Excel, Bank, Government</p>
+                </div>
+
+                <div class="rule-card" data-aos="flip-up" data-aos-delay="450">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="shield" class="w-4 h-4 flex-shrink-0" style="color:var(--brand-teal)"></i>
+                        <h4 class="font-bold text-sm text-gray-800">High Performance &amp; Security</h4>
+                    </div>
+                    <p class="text-xs text-gray-500">Support 10k+ employees, Permission, Audit, Login control</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="py-8 border-t text-center" style="background:var(--brand-dark); border-color:#2a2a2a;">
+        <div class="flex flex-col items-center gap-3">
+            <img src="assets/Logo_text_white.png" alt="Nextora" class="h-6 object-contain opacity-70">
+            <p class="text-gray-500 text-sm">THAI HRM SYSTEM SPECIFICATION</p>
+            <p class="text-xs" style="color:var(--brand-teal)">Nextora Tech Co.,Ltd.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        // Init Lucide icons
+        lucide.createIcons();
+
+        // Init AOS Animation
+        AOS.init({
+            once: false,
+            mirror: true,
+            offset: 50,
+            duration: 800
+        });
+
+        // Mobile Menu
+        const btn   = document.getElementById('mobile-menu-btn');
+        const menu  = document.getElementById('mobile-menu');
+        const links = document.querySelectorAll('.mobile-link');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
